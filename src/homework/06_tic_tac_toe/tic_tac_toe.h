@@ -11,6 +11,7 @@ public:
     void mark_board(int position);
     string get_player() const;
     void display_board() const;
+    void reset_game();
 
 private:
     string player;

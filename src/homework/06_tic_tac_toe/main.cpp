@@ -23,7 +23,7 @@ int main() {
 
         cout << "Game over!" << endl;
         game.display_board();
-        game.clear_board();
+        game.reset_game();
 
         cout << "Play again? (y/n): ";
         cin >> play_again;

@@ -44,6 +44,10 @@ bool TicTacToe::check_board_full() {
     return true;
 }
 
+void TicTacToe::reset_game() {
+    clear_board();
+}
+
 void TicTacToe::clear_board() {
     pegs = {" ", " ", " ", " ", " ", " ", " ", " ", " "};
 }
