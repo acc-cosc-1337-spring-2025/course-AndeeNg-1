@@ -3,8 +3,8 @@
 
 using namespace std;
 
-int main() 
-TicTacToe game;
+int main() {
+    TicTacToe game;
     string first_player;
     char play_again;
 
@@ -23,11 +23,13 @@ TicTacToe game;
 
         cout << "Game over!" << endl;
         game.display_board();
+        game.clear_board();
+
         cout << "Play again? (y/n): ";
         cin >> play_again;
 
     } while (play_again == 'y' || play_again == 'Y');
 
     cout << "Thanks for playing!" << endl;
-	return 0;
+    return 0;
 }
