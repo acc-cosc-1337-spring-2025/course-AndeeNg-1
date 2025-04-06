@@ -1,22 +1,26 @@
-#include <iostream>
-#include <vector>
 #include <string>
+#include <vector>
 
-using namespace std;
-
-class TicTacToe {
+class TicTacToe
+{
 public:
-    bool game_over(); 
-    void start_game(string first_player);
+    void start_game(std::string first_player);
     void mark_board(int position);
-    string get_player() const;
     void display_board() const;
-    void reset_game();
+    std::string get_player() const;
+    bool game_over();
+    std::string get_winner() const;
 
 private:
-    string player;
-    vector<string> pegs = {" ", " ", " ", " ", " ", " ", " ", " ", " "};
     void set_next_player();
-    bool check_board_full();
     void clear_board();
+    bool check_board_full() const;
+    bool check_column_win() const;
+    bool check_row_win() const;
+    bool check_diagonal_win() const;
+    void set_winner();
+
+    std::string player;
+    std::vector<std::string> pegs{9, " "};
+    std::string winner;
 };
