@@ -1,80 +1,36 @@
-#include <iostream>
-#include <string>
-#include "tic_tac_toe.h"
 #include "tic_tac_toe_manager.h"
+#include "tic_tac_toe_3.h"
+#include "tic_tac_toe_4.h"
+#include <iostream>
+#include <memory>
 
 int main() {
     TicTacToeManager manager;
+    std::unique_ptr<TicTacToe> game;
     std::string first_player;
-    std::string play_again;
+    int position;
+    int game_type;
 
-    std::cout << "Welcome to Tic Tac Toe!\n";
+    std::cout << "Enter 3 for 3x3 or 4 for 4x4 TicTacToe: ";
+    std::cin >> game_type;
 
-    do {
-        do {
-            std::cout << "\nEnter first player (X or O): ";
-            std::cin >> first_player;
-            if (first_player != "X" && first_player != "O") {
-                std::cout << "Invalid input. Please enter X or O.\n";
-            }
-        } while (first_player != "X" && first_player != "O");
+    if (game_type == 3)
+        game = std::make_unique<TicTacToe3>();
+    else
+        game = std::make_unique<TicTacToe4>();
 
-        TicTacToe game;
-        try {
-            game.start_game(first_player);
-        } catch (const std::invalid_argument& e) {
-            std::cerr << "Error: " << e.what() << "\n";
-            return 1;
-        }
+    std::cout << "Enter first player (X or O): ";
+    std::cin >> first_player;
+    game->start_game(first_player);
 
-        int position;
-        bool valid_move = false;
+    while (!game->game_over()) {
+        std::cout << "Enter position: ";
+        std::cin >> position;
+        game->mark_board(position);
+    }
 
-        while (!game.game_over()) {
-            std::cout << game;
-            std::cout << "Player " << game.get_player() << ", enter position (1-9): ";
+    manager.save_game(game);
+    manager.display_games();
 
-            while (!(std::cin >> position)) {
-                std::cout << "Invalid input. Please enter a number (1-9): ";
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            }
-
-            try {
-                game.mark_board(position);
-                valid_move = true;
-            } catch (const std::out_of_range& e) {
-                std::cout << "Error: " << e.what() << "\n";
-                valid_move = false;
-            } catch (const std::runtime_error& e) {
-                std::cout << "Error: " << e.what() << "\n";
-                valid_move = false;
-            }
-
-            if (valid_move) {
-                std::cout << game;
-            }
-        }
-
-        std::cout << game;
-        std::string winner = game.get_winner();
-        if (winner == "C") {
-            std::cout << "It's a tie!\n";
-        } else {
-            std::cout << "Player " << winner << " wins!\n";
-        }
-
-        manager.save_game(game);
-        int x_wins, o_wins, ties;
-        manager.get_winner_totals(o_wins, x_wins, ties);
-        std::cout << "X wins " << x_wins << ", O wins " << o_wins << ", Ties " << ties << "\n";
-
-        std::cout << "Play again? (y/n): ";
-        std::cin >> play_again;
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-    } while (play_again == "y" || play_again == "Y");
-
-    std::cout << "\nThanks for playing!\n";
     return 0;
 }
